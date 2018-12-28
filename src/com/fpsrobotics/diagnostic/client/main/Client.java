@@ -17,9 +17,10 @@ public class Client {
 	static Scanner scanner = new Scanner(System.in);
 	// String username = scanner.nextLine();
 
-	public static void main(String args[]) {
-		parseInput();
-	}
+	public static void main(String args[]) {//TODO Delete this line
+		System.out.println("Hackbots Diagnostic Client 1.0");
+		parseInput(); //TODO Delete this line
+	}//TODO Delete this line
 
 	public static void parseInput() {
     	System.out.println("Input command:");
@@ -40,15 +41,13 @@ public class Client {
 	public static void execute() {
 		try {
 			String host = "localhost";
-			int port = 25000;
+			int port = 5800;
 			InetAddress address = InetAddress.getByName(host);
 			socket = new Socket(address, port);
-
 			// Send the message to the server
 			OutputStream os = socket.getOutputStream();
 			OutputStreamWriter osw = new OutputStreamWriter(os);
 			BufferedWriter bw = new BufferedWriter(osw);
-
 			message = scanner.nextLine();
 
 			String sendMessage = message + "\n";
@@ -62,6 +61,7 @@ public class Client {
 			BufferedReader br = new BufferedReader(isr);
 			String message = br.readLine();
 			System.out.println("ROBOT:  " + message);
+			execute();//start over
 		} catch (Exception exception) {
 			System.out.println(exception.getMessage());
 			//exception.printStackTrace();
