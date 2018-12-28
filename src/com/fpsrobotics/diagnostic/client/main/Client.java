@@ -1,4 +1,4 @@
-package com.fpsrobotics.diagnostic.main;
+package com.fpsrobotics.diagnostic.client.main;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
