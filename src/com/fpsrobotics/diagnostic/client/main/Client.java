@@ -15,6 +15,7 @@ public class Client {
 	private static Socket socket;
 	static String message;
 	static Scanner scanner = new Scanner(System.in);
+	static int port = 5800;
 	// String username = scanner.nextLine();
 
 	public static void main(String args[]) {//TODO Delete this line
@@ -26,19 +27,58 @@ public class Client {
     	System.out.println("Input command:");
     	String input = scanner.nextLine();
     	if(input.equalsIgnoreCase("connect")) {
-        	System.out.println("Connecting...");
+        	System.out.println("Connecting to robot on port "+port);
         	execute();
+    	}
+    	else if(input.equalsIgnoreCase("connect local")) {
+    		System.out.println("Connecting to a local server on port "+port);
+    		executeTest();
     	}
     	else if(input.equalsIgnoreCase("exit")) {
     		System.exit(0);
     }
     	else {
-    	System.out.println("use 'exit' or 'connect'");
+    	System.out.println("use 'exit', 'connect', 'connect local'");
     	parseInput();
     	}
     }
-
 	public static void execute() {
+		try {
+			String host = "10.34.14.16";
+			InetAddress address = InetAddress.getByName(host);
+			socket = new Socket(address, port);
+			// Send the message to the server
+			OutputStream os = socket.getOutputStream();
+			OutputStreamWriter osw = new OutputStreamWriter(os);
+			BufferedWriter bw = new BufferedWriter(osw);
+			message = scanner.nextLine();
+
+			String sendMessage = message + "\n";
+			bw.write(sendMessage);
+			bw.flush();
+			//System.out.println("Message sent to the server  " + sendMessage);
+
+			// Get the return message from the server
+			InputStream is = socket.getInputStream();
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String message = br.readLine();
+			System.out.println("ROBOT:  " + message);
+			execute();//start over
+		} catch (Exception exception) {
+			System.out.println(exception.getMessage());
+			//exception.printStackTrace();
+			parseInput();
+		} finally {
+			// Closing the socket
+			try {
+				socket.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		}
+	public static void executeTest() {
 		try {
 			String host = "localhost";
 			int port = 5800;
